@@ -48,9 +48,13 @@ public class BrandRepositoryService {
 		
 		public boolean updateBrand(String brandSapCode,String updatedBy) {
 			
-			String updateQuery = "UPDATE [dbo].[BrandMaster] SET [Active] = [Active]-1, [UpdatedBy] = ?, [UpdateTime]=GETDATE() WHERE  [BrandSapCode] = ? ";
+			String updateQuery1 = "UPDATE [dbo].[BrandMaster] SET [UpdatedBy] = ?, [UpdateTime]=GETDATE() WHERE [BrandSapCode]=? and [Active]=1;";
 			
-			int update = jdbcTemplate.update(updateQuery,updatedBy,brandSapCode);
+			int update = jdbcTemplate.update(updateQuery1,updatedBy,brandSapCode);
+			
+			String updateQuery2 = "UPDATE [dbo].[BrandMaster] SET [Active] = [Active]-1 WHERE [BrandSapCode]=?;";
+			
+			int update2 = jdbcTemplate.update(updateQuery2,brandSapCode);
 			
 			return update > 0;
 			
